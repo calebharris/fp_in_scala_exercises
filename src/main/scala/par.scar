@@ -1,0 +1,13 @@
+:paste fpinscala/parallel/Actor.scala
+:paste fpinscala/parallel/Par.scala
+import fpinscala.parallel._
+import Par._
+
+import java.util.concurrent._
+import Examples._
+
+val ints = IndexedSeq(1,2,3,4,5,6,7,8,9)
+val serialES = Executors.newFixedThreadPool(1)
+val twoThreads = Executors.newFixedThreadPool(2)
+val tenThreads = Executors.newFixedThreadPool(10)
+val hundoThreads = Executors.newFixedThreadPool(100)

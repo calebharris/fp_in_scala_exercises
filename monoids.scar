@@ -1,0 +1,13 @@
+import fpinscala.monoids._
+import MonoidInstances._
+import java.util.concurrent._
+import fpinscala.parallel.Par
+import fpinscala.datastructures.Tree
+import Tree._
+import FoldableInstances._
+
+val v = Range(1, 100000).toIndexedSeq
+def time(f: () => Unit): Unit = { val t0 = System.currentTimeMillis; f(); println((System.currentTimeMillis - t0) / 1000.0) }
+val p = Monoid.parFoldMap(v, IntAddition)(x => x)
+val es = Executors.newCachedThreadPool
+val t = Tree(Tree("one", "two"), Tree("three", "four"))

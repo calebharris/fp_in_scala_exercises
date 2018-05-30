@@ -1,0 +1,3 @@
+import fpinscala.state._
+import fpinscala.testing._
+val rng = SimpleRNG(1234)

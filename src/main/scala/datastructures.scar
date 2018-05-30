@@ -1,0 +1,23 @@
+:paste fpinscala/datastructures/List.scala
+:paste fpinscala/datastructures/Tree.scala
+:paste fpinscala/datastructures/Option.scala
+:paste fpinscala/datastructures/Either.scala
+
+import fpinscala.datastructures._
+import List._
+import Tree._
+import Option._
+import Either._
+
+val t1 = Tree("a")
+val t2 = Tree("b")
+val t3 = Tree(t1, t2)
+val t4 = Tree(t3, "d")
+
+val b1 = Tree(1, 2)
+val b2 = Tree(b1, 4)
+
+val o1 = Some("Hello")
+val o2 = Some("Hello, World!")
+val o3 = o2.flatMap((s) => Some(s.substring(4)))
+val o4 = o2.flatMap(_ => None)

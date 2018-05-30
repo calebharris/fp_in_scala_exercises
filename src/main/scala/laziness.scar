@@ -1,0 +1,6 @@
+:paste fpinscala/laziness/Stream.scala
+import fpinscala.laziness.Stream
+import Stream._
+
+val s1 = Stream(1,2,3,4,5)
+val s2 = s1.mapUnfold(_ * 2)

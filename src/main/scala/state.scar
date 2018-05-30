@@ -1,0 +1,8 @@
+:paste fpinscala/state/State.scala
+:paste fpinscala/state/RNG.scala
+import fpinscala.state._
+import State._
+import RNG._
+
+val rng = SimpleRNG(42)
+

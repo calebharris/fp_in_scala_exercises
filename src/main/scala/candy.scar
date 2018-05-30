@@ -1,0 +1,8 @@
+:paste fpinscala/state/State.scala
+:paste fpinscala/state/Candy.scala
+import fpinscala.state._
+import State._
+import Machine._
+
+val machine = Machine(true, 10, 0)
+

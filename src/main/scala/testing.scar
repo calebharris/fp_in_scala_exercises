@@ -1,0 +1,42 @@
+:paste fpinscala/parallel/Actor.scala
+:paste fpinscala/parallel/Par.scala
+:paste fpinscala/laziness/Stream.scala
+:paste fpinscala/state/State.scala
+:paste fpinscala/state/RNG.scala
+:paste fpinscala/testing/Gen.scala
+import fpinscala.parallel.Par
+import fpinscala.state.RNG._
+import fpinscala.state.SimpleRNG
+import fpinscala.testing._
+import java.util.concurrent.Executors
+import java.util.concurrent.ExecutorService
+
+val rng = SimpleRNG(1234)
+val between = (a: Int, b: Int) => nonNegativeLessThan(b - a).map(_ + a)
+val btw = between(2, 5)
+val oneToNine = Gen.choose(1, 10)
+val gtOne = Gen.forAll(oneToNine)(_ > 1)
+val ltTen = Gen.forAll(oneToNine)(_ < 10)
+
+val smallInt = Gen.choose(-10,10)
+
+val maxProp = Gen.forAll(Gen.listOf1(smallInt)) { ns =>
+	val max = ns.max
+	!ns.exists(_ > max)
+}
+
+val sortedProp = Gen.forAll(Gen.listOf1(smallInt)) { ns =>
+	val sortedNs = ns.sorted
+	//println(s"unsorted: $ns\nsorted: $sortedNs")
+	val p = sortedNs.foldLeft((-11, true))( (pair, next) => {
+		val (i, b) = pair
+		(next, b && (i <= next)) })
+	p._2
+}
+
+val ES: ExecutorService = Executors.newCachedThreadPool
+val parCheck = Prop.check {
+	val p = Par.map(Par.unit(1))(_ + 1)
+	val p2 = Par.unit(2)
+	Par.run(ES)(p) == Par.run(ES)(p2)
+}
