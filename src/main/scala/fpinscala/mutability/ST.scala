@@ -21,8 +21,6 @@ trait ST[S, A] { self =>
     f(a).run(s1)
   }
 
-
-
 }
 
 object ST {
@@ -33,15 +31,16 @@ object ST {
 
   def noop[S]: ST[S, Unit] = ST(())
 
-  def noop[S](f: => Unit): ST[S, Unit] = {f; ST(())}
+  def noop[S](f: => Unit): ST[S, Unit] = { f; ST(()) }
 
   def runST[A](st: RunnableST[A]): A = st[Unit].run(())._1
 
-  implicit def monad[S]: Monad[({type f[x] = ST[S, x]})#f] =
-    new Monad[({type f[x] = ST[S, x]})#f] {
+  implicit def monad[S]: Monad[({ type f[x] = ST[S, x] })#f] =
+    new Monad[({ type f[x] = ST[S, x] })#f] {
       override def unit[A](a: => A): ST[S, A] = ST(a)
 
-      override def flatMap[A, B](sa: ST[S, A])(f: A => ST[S, B]): ST[S, B] = sa flatMap f
+      override def flatMap[A, B](sa: ST[S, A])(f: A => ST[S, B]): ST[S, B] =
+        sa flatMap f
     }
 }
 

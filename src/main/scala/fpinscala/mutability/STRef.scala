@@ -13,14 +13,16 @@ sealed trait STRef[S, A] {
     ((), s)
   }
 
-  def modify(f: A => A): ST[S, Unit] = for {
-    a <- read
-    _ <- write(f(a))
-  } yield ()
+  def modify(f: A => A): ST[S, Unit] =
+    for {
+      a <- read
+      _ <- write(f(a))
+    } yield ()
 }
 
 object STRef {
-  def apply[S, A](a: A): ST[S, STRef[S, A]] = ST(new STRef[S, A] {
-    var cell: A = a
-  })
+  def apply[S, A](a: A): ST[S, STRef[S, A]] =
+    ST(new STRef[S, A] {
+      var cell: A = a
+    })
 }
